@@ -19,11 +19,13 @@ def hello_world0():
 @app.route('/task1/i_will_not/')
 def hello_world1():
     text = "<li>I will not waste time</li>\n" * 100
-    return f'<ul>{text}</ul>'
+    return f'<ul id=blackboard>{text}</ul>'
 
 
 @app.route('/')
 def hello_world2():
-    text = "<li><a href='/task1/random/'>/task1/random/</a></li>\n" \
-           "<li><a href='/task1/i_will_not/'>/task1/i_will_not/</a></li>"
-    return f'<ul>{text}</ul>'
+    text = '''
+           <li><a href='/task1/random/'>/task1/random/</a></li>
+           <li><a href='/task1/i_will_not/'>/task1/i_will_not/</a></li>
+           '''
+    return f'<ul id=menu>{text}</ul>'
