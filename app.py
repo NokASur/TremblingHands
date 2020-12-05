@@ -4,8 +4,14 @@ import random as rnd
 app = Flask(__name__)
 
 
-@app.route('/task1/random/')
+@app.route('/haba/')
 def hello_world():
+    text = 'Hello, Haba!\nHello, Arsen!\nHello, Karim!'
+    return f'<pre>{text}</pre>'
+
+
+@app.route('/task1/random/')
+def hello_world0():
     text = "Haba's mark is " + str(rnd.randint(1, 5))
     return f'<pre>{text}</pre>'
 
