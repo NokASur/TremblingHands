@@ -80,3 +80,48 @@ def num_work(num=None):
 
         return render_template("2tnumsR.html", num=num, iseven=iseven, num_text=num_text)
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+</head>
+<body>
+<ul>
+    <li><h1>debug info</h1><a>city={{gorod}} category={{category}} ad={{ad}}</a></li>
+    <li><h1>{{ad}}</h1></li>
+    <li><a>{{a}} {{b}} {{c}}</a></li>
+
+</ul>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Control work</title>
+</head>
+<body>
+
+    <p>"status": "FAIL"</p>
+
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bruhlord</title>
+</head>
+<body>
+
+
+    <p>"status": "OK",</p>
+    <p>"number": {{num}},</p>
+    <p>"isEven": {{iseven}},</p>
+    <p>"words": "{{num_text}}"</p>
+
+
+</body>
+</html>
