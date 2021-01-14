@@ -1,31 +1,82 @@
-from flask import Flask
+from flask import Flask, render_template, request, redirect, url_for
+from random import randint
+import requests
+import json
 import random as rnd
+from random import getrandbits, shuffle
+import string
+from collections import OrderedDict
+from operator import itemgetter
+
+url = "https://codeforces.com/"
+
+
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
-@app.route('/haba/')
-def hello_world():
-    text = 'Hello, Haba!\nHello, Arsen!\nHello, Karim!'
-    return f'<pre>{text}</pre>'
+def convert(number):
+    word = ""
+    dict = {
+        "0": "zero ",
+        "1": "one ",
+        "2": "two ",
+        "3": "three ",
+        "4": "four ",
+        "5": "five ",
+        "6": "six ",
+        "7": "seven ",
+        "8": "eight ",
+        "9": "nine "
+    }
+    for i in str(number):
+        word += dict[i]
+    return word
 
 
-@app.route('/task1/random/')
-def hello_world0():
-    text = "Haba's mark is " + str(rnd.randint(1, 5))
-    return f'<pre>{text}</pre>'
+@app.route('/task2/avito/<gorod>/<vesh>/<xenya>')
+def show_user_profile(gorod=None, vesh=None, xenya=None):
+    adj = ["survellionisting", "abilluloidniy", "Asadulloichne"]
+    verb = ["working", "torking", "sponking"]
+    noun = ["thing", "dink", "jhhjh"]
+    shuffle(adj)
+    shuffle(verb)
+    shuffle(noun)
+    g1 = adj[0]
+    g2 = verb[0]
+    g3 = noun[0]
+    return render_template('index.html', gorod=gorod, category=vesh, ad=xenya, a=g1, b=g2, c=g3)
 
 
-@app.route('/task1/i_will_not/')
-def hello_world1():
-    text = "<li>I will not waste time</li>\n" * 100
-    return f'<ul id=blackboard>{text}</ul>'
+@app.route('/task2/cf/profile/<username>/')
+def boi(username):
+    m = requests.get("https://codeforces.com/api/user.rating?handle=" + str(username)).json()
+    if m["status"] != "OK":
+        out = "User not found"
+    else:
+        print(m["result"])
+        lol = str(m["result"][-1]["newRating"])
+        out = """<table id=stats> <tr><th>User</th><th>Rating</th></tr>
+<tr><td>{}</td><td>{}</td></tr>
+</table>""".format(username, lol)
+    return out
 
 
-@app.route('/')
-def hello_world2():
-    text = '''
-           <li><a href='/task1/random/'>/task1/random/</a></li>
-           <li><a href='/task1/i_will_not/'>/task1/i_will_not/</a></li>
-           '''
-    return f'<ul id=menu>{text}</ul>'
+@app.route('/task2/num2words/<num>')
+def num_work(num=None):
+    num = int(num)
+    if num > 999 or num < 0:
+        status = "FAIL"
+        return render_template("t2nums.html")
+    else:
+        if num % 2 == 0:
+            iseven = "true"
+        else:
+            iseven = "false"
+
+        num_text = convert(num)
+        num_text.strip()
+
+        return render_template("2tnumsR.html", num=num, iseven=iseven, num_text=num_text)
+
