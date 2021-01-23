@@ -56,7 +56,3 @@ def chelik(username):
 <tr><td>{}</td><td>{}</td></tr>
 </table>""".format(username, lol)
     return out
-
-
-if __name__ == '__main__':
-    app.run(host='127.0.0.6')
