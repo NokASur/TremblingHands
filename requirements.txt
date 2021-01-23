@@ -1,3 +1,8 @@
 flask
 gunicorn
 requests
+inflect
+json
+shuffle
+string
+random
