@@ -3,5 +3,4 @@ gunicorn
 requests
 inflect
 shuffle
-string
 random
