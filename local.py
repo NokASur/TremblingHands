@@ -1,35 +1,61 @@
-from flask import Flask
+from flask import Flask, render_template
+import requests
+import inflect
+import json
 import random as rnd
+import string
+from random import shuffle
+
 
 app = Flask(__name__)
 
-
-@app.route('/haba/')
-def hello_world():
-    text = 'Hello, Haba!\nHello, Arsen!\nHello, Karim!'
-    return f'<pre>{text}</pre>'
+s = rnd.choice(string.ascii_letters) + rnd.choice(string.ascii_letters)
 
 
-@app.route('/task1/random/')
-def hello_world0():
-    text = "Haba's mark is " + str(rnd.randint(1, 5))
-    return f'<pre>{text}</pre>'
+@app.route('/task2/num2words/<num>/')
+def numc(num):
+    if int(num) < 0 or int(num) > 999:
+        return json.dumps({"status": "FAIL"})
+    else:
+        p = inflect.engine()
+        lol = p.number_to_words(int(num))
+        if 'and' in lol:
+            lol = ''.join(lol.split(' and'))
+        if '-' in lol:
+            lol = ' '.join(lol.split('-'))
+        if int(num) % 2 == 0:
+            m = True
+        else:
+            m = False
+        return json.dumps({"status": "OK", "number": int(num), "isEven": m, "words": str(lol)})
 
 
-@app.route('/task1/i_will_not/')
-def hello_world1():
-    text = "<li>I will not waste time</li>\n" * 100
-    return f'<ul id=blackboard>{text}</ul>'
+@app.route('/task2/avito/<gorod>/<vesh>/<xenya>')
+def show_user_profile(gorod=None, vesh=None, xenya=None):
+    adj = ["survellionisting", "abilluloidniy", "Asadulloichne"]
+    verb = ["working", "torking", "sponking"]
+    noun = ["thing", "dink", "jhhjh"]
+    shuffle(adj)
+    shuffle(verb)
+    shuffle(noun)
+    g1 = adj[0]
+    g2 = verb[0]
+    g3 = noun[0]
+    return render_template('av.html', gorod=gorod, category=vesh, ad=xenya, a=g1, b=g2, c=g3)
 
 
-@app.route('/')
-def hello_world2():
-    text = '''
-           <li><a href='/task1/random/'>/task1/random/</a></li>
-           <li><a href='/task1/i_will_not/'>/task1/i_will_not/</a></li>
-           '''
-    return f'<ul id=menu>{text}</ul>'
-
+@app.route('/task2/cf/profile/<username>/')
+def chelik(username):
+    m = requests.get("https://codeforces.com/api/user.rating?handle=" + str(username)).json()
+    if m["status"] != "OK":
+        out = "User not found"
+    else:
+        print(m["result"])
+        lol = str(m["result"][-1]["newRating"])
+        out = """<table id=stats> <tr><th>User</th><th>Rating</th></tr>
+<tr><td>{}</td><td>{}</td></tr>
+</table>""".format(username, lol)
+    return out
 
 
 if __name__ == '__main__':
