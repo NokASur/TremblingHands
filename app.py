@@ -27,6 +27,25 @@ def cf_single(handle, page_number):
     return render_template("sing.html", popitki=popitki, handle=handle, max_page_number=max_page_number,
                            page_number=page_number)
 
+@app.route('/task3/cf/top/')
+def top():
+    handles = sorted(request.args.get("handles").split("|"))
+    orderby = request.args.get("orderby", "")
+    handict = {}
+    url = "https://codeforces.com/api/user.info?handles="
+    for nick in handles:
+        url = url + nick + ";"
+    ssilka = json.loads(requests.get(url).text)
+    if ssilka["status"] == "FAILED":
+        return "User not found"
+    else:
+        for nick in ssilka["result"]:
+            handle = nick["handle"]
+            rating = nick["rating"]
+            handict[handle] = int(rating)
+        if orderby == "rating":
+            handict = OrderedDict(sorted(handict.items(), key=itemgetter(1), reverse=True))
+    return render_template("Top.html", dict=handict)
 
 
 @app.route('/task2/num2words/<num>/')
