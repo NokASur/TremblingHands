@@ -29,6 +29,7 @@ def cf_single(handle, page_number):
     return render_template("sing.html", popitki=popitki, handle=handle, max_page_number=max_page_number,
                            page_number=page_number)
 
+
 @app.route('/task3/cf/top/')
 def top():
     handles = sorted(request.args.get("handles").split("|"))
@@ -50,6 +51,11 @@ def top():
     return render_template("Top.html", dict=handict)
 
 
+@app.errorhandler(404)
+def mistake(succ):
+    return render_template("error.html"), 404
+
+
 @app.route('/task2/num2words/<num>/')
 def numc(num):
     if int(num) < 0 or int(num) > 999:
@@ -68,11 +74,19 @@ def numc(num):
         return json.dumps({"status": "OK", "number": int(num), "isEven": m, "words": str(lol)})
 
 
-@app.route('/task2/avito/<city>/<category>/<ad>/')
-def avito(city, category, ad):
-    out = """<h1>debug info</h1><p>city={} category={} ad={}</p><h1>{}</h1><p>{}</p>""".format(city, category, ad,
-                                                                                                   category[1], city[1])
-    return out
+@app.route('/task2/avito/<gorod>/<vesh>/<xenya>')
+def show_user_profile(gorod=None, vesh=None, xenya=None):
+    adj = ["survellionisting", "abilluloidniy", "Asadulloichne"]
+    verb = ["working", "torking", "sponking"]
+    noun = ["thing", "dink", "jhhjh"]
+    shuffle(adj)
+    shuffle(verb)
+    shuffle(noun)
+    g1 = adj[0]
+    g2 = verb[0]
+    g3 = noun[0]
+    return render_template('av.html', gorod=gorod, category=vesh, ad=xenya, a=g1, b=g2, c=g3)
+
 
 
 @app.route('/task2/cf/profile/<username>/')
