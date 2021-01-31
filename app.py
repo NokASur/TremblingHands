@@ -14,8 +14,6 @@ app = Flask(__name__)
 
 s = rnd.choice(string.ascii_letters) + rnd.choice(string.ascii_letters)
 
-s = rnd.choice(string.ascii_letters) + rnd.choice(string.ascii_letters)
-
 value_ = {
     "token": "4UffYATBFJOqTiy9aJDnajwBa5XrSTfy",
     "secret": "sufgsfsugfssef3432424242423424242",
