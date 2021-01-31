@@ -1,17 +1,60 @@
-from flask import Flask, render_template,request, url_for,redirect
+from flask import Flask, render_template, request, redirect, url_for
+from random import randint
 import requests
 import inflect
 import json
 import random as rnd
+from random import getrandbits, shuffle
 import string
-from random import shuffle
-from operator import itemgetter
 from collections import OrderedDict
+from operator import itemgetter
 
 
 app = Flask(__name__)
 
 s = rnd.choice(string.ascii_letters) + rnd.choice(string.ascii_letters)
+
+s = rnd.choice(string.ascii_letters) + rnd.choice(string.ascii_letters)
+
+value_ = {
+    "token": "4UffYATBFJOqTiy9aJDnajwBa5XrSTfy",
+    "secret": "sufgsfsugfssef3432424242423424242",
+    "command": "set",
+    "key": "",
+    "value": ""
+}
+data_set = value_
+
+key_ = {
+    "token": "4UffYATBFJOqTiy9aJDnajwBa5XrSTfy",
+    "secret": "sufgsfsugfssef3432424242423424242",
+    "command": "get",
+    "key": ""
+}
+data_get = key_
+
+games_info = {}
+
+
+@app.route("/task4/santa/create", methods=["GET", "POST"])
+def create():
+    if request.method == "POST":
+        create_form = request.form
+        game_name = str(create_form["name_of_game"])
+        game_code = str(getrandbits(64)) + game_name
+        game_code_secret = str(getrandbits(64))
+        link_for_player = "/task4/santa/play/{link}".format(link=game_code)
+        link_for_organizers = "/task4/santa/toss/{link}/{secret}".format(link=game_code, secret=game_code_secret)
+        info = {"name": game_name, "code": game_code, "secret": game_code_secret, "play": link_for_player,
+                "organize": link_for_organizers, "active": "True", "players": []}
+        data_set["key"] = game_code
+        data_set["value"] = json.dumps(info)
+        requests.post("https://arsenwisheshappy2021.herokuapp.com/query", data=data_set)
+        return render_template("create_posted.html", form=create_form, player_link=link_for_player,
+                               organizer_link=link_for_organizers)
+    else:
+        return render_template('create_form.html')
+
 
 @app.route('/task3/cf/profile/<handle>/')
 def cf_si(handle):
@@ -101,3 +144,7 @@ def chelik(username):
 <tr><td>{}</td><td>{}</td></tr>
 </table>""".format(username, lol)
     return out
+
+
+if __name__ == '__main__':
+    app.run(host='127.0.0.6')
