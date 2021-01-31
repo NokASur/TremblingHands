@@ -54,6 +54,34 @@ def create():
         return render_template('create_form.html')
 
 
+@app.route("/task4/santa/play/<link>", methods=["GET", "POST"])
+def play(link):
+    if request.method == "GET":
+        link_after_post = '/task4/santa/play/{link}'.format(link=link)
+        data_get["key"] = link
+        r_get = requests.post("https://arsenwisheshappy2021.herokuapp.com/query", data=data_get)
+        game_info = json.loads(r_get.text)
+        if game_info["active"] == "False":
+            error = True
+        else:
+            error = False
+        return render_template("play.html", error_start=error, link_after_post=link_after_post)
+    elif request.method == "POST" and request.form["name"].strip() == '':
+        link_after_post = '/task4/santa/play/{link}'.format(link=link)
+        return render_template("play.html", error_name=True, link_after_post=link_after_post)
+    elif request.method == "POST":
+        player_form = request.form
+        player_name = str(player_form["name"])
+        data_get["key"] = link
+        r_get = requests.post("https://arsenwisheshappy2021.herokuapp.com/query", data=data_get)
+        game_info = json.loads(r_get.text)
+        game_info["players"].append(player_name)
+        data_set["key"] = link
+        data_set["value"] = json.dumps(game_info)
+        requests.post("https://arsenwisheshappy2021.herokuapp.com/query", data=data_set)
+        return render_template("play_success.html", name=player_name)
+
+
 @app.route('/task3/cf/profile/<handle>/')
 def cf_si(handle):
     return redirect(url_for('cf_single', handle=handle, page_number=1))
@@ -146,3 +174,4 @@ def chelik(username):
 
 if __name__ == '__main__':
     app.run(host='127.0.0.6')
+
