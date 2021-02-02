@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for
-from random import randint
 import requests
 import inflect
 import json
@@ -80,6 +79,42 @@ def play(link):
         data_set["value"] = json.dumps(game_info)
         requests.post("https://arsenwisheshappy2021.herokuapp.com/query", data=data_set)
         return render_template("play_success.html", name=player_name)
+
+
+@app.route("/task4/santa/toss/<link>/<secret>", methods=["GET", "POST"])
+def secreet(link, secret):
+    if request.method == "POST":
+        data_get["key"] = link
+        r_get = requests.post("https://arsenwisheshappy2021.herokuapp.com/query", data=data_get)
+        game_info = json.loads(r_get.text)
+        players_list = game_info["players"]
+        shuffle(players_list)
+        pairs = {}
+        pairs[players_list[0]] = players_list[-1]
+        for i in range(1, len(players_list) // 2):
+            pairs[players_list[i]] = players_list[-i - 1]
+        game_info["active"] = "False"
+        data_set["key"] = link
+        data_set["value"] = json.dumps(game_info)
+        requests.post("https://arsenwisheshappy2021.herokuapp.com/query", data=data_set)
+        list_of_keys = list(pairs.keys())
+        return render_template("toss_finished.html", pairs=pairs, list_of_keys=list_of_keys)
+    elif request.method == "GET":
+        data_get["key"] = link
+        r_get = requests.post("https://arsenwisheshappy2021.herokuapp.com/query", data=data_get)
+        game_info = json.loads(r_get.text)
+        if game_info["active"] == "False":
+            error_f = True
+        else:
+            error_f = False
+        players_list = game_info["players"]
+        if len(players_list) == 0 or len(players_list) % 2 == 1:
+            error_q = True
+        else:
+            error_q = False
+        link_2 = "/task4/santa/toss/{link}/{secret}".format(link=link, secret=secret)
+        return render_template("toss_start.html", error_q=error_q, error_f=error_f, players_list=players_list,
+                               link_2=link_2)
 
 
 @app.route('/task3/cf/profile/<handle>/')
@@ -174,4 +209,3 @@ def chelik(username):
 
 if __name__ == '__main__':
     app.run(host='127.0.0.6')
-
