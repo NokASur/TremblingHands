@@ -8,7 +8,7 @@
 <a id="error" style="color:blue;">Please, enter your name</a>
 {% endif %}
 {% if error_start == True %}
-<a style="color:blue">Sorry, game is finished</a>
+<a id="error" style="color:blue">Sorry, game is finished</a>
 {% else %}
 <form action={{link_after_post}} method="post" id="play">
     <input name="name" type="text" id="name"/><br>
