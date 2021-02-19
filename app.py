@@ -32,6 +32,10 @@ data_get = key_
 
 games_info = {}
 
+@app.route("/task5/sign-up", methods=["GET", "POST"])
+def cybersnus():
+    if request.method =="GET":
+        return render_template('cybersnus.html')
 
 @app.route("/task4/santa/create", methods=["GET", "POST"])
 def create():
