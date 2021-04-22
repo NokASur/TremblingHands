@@ -42,6 +42,3 @@ def index():
     email = request.form['email']
     password = request.form['password']
     
-if __name__ == '__main__':
-    app.run()
-
