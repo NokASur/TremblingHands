@@ -29,6 +29,12 @@ class stupeeed_users(Base):
 app = Flask(__name__)
 
 
+@app.route("/")
+def index1():
+    return "balls"
+
+
+
 @app.route("/task5/sign-up", methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
