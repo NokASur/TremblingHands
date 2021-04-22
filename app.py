@@ -35,4 +35,7 @@ def index():
         return render_template("sign_in.html", CSK=os.environ['RECAPTCHA_SITE_KEY'])
     email = request.form['email']
     password = request.form['password']
+    
+if __name__ == '__main__':
+    app.run()
 
