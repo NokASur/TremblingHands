@@ -4,3 +4,4 @@ requests
 inflect
 shuffle
 sqlalchemy
+psycopg2
