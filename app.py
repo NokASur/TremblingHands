@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 
 
-database_url = os.environ['DATA_BASE_URL'].split(':')
+database_url = os.environ['DATABASE_URL'].split(':')
 database_url = database_url[0] + "ql:" + ":".join(database_url[1:])
 engine = create_engine(database_url)
 
