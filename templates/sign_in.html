@@ -1,0 +1,20 @@
+{%extends "base.html"%}
+{%block title%}
+<title>Sign_in</title>
+{%endblock%}
+{%block body%}
+{%if error%}
+<p id="error">Email/Password are incorrect</p>
+{%endif%}
+<form action="" method = "post" id = "sign in">
+    <p>Enter email</p>
+    <input type = "email" name = "email"><br>
+    <p>Enter password</p>
+    <input type = "text" name = "password"><br>
+    <input type = "submit" name = "send">
+    <div class="g-recaptcha" data-sitekey={{CSK}}></div>
+    <br/>
+    <input type="submit" value="Submit">
+</form>
+
+{%endblock%}
