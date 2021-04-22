@@ -36,7 +36,3 @@ def index():
     email = request.form['email']
     password = request.form['password']
 
-
-if __name__ == '__main__':
-    app.run(host='127.0.0.6', debug=True)
-
