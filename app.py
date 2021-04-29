@@ -57,6 +57,21 @@ def index():
     session['email'] = email
     cur.execute(f"INSERT INTO ips (email, ip, time) VALUES ('{email}', '{request.remote_addr}', '{time}')")
     conn.commit()
-    session['auth'] = 'logged'
+    session['authorization'] = 'logged'
     return redirect(url_for('account'))
+
+
+@app.route("/task5/sign-in")
+def account():
+    if session.get('authorization', 'not_logged') != 'logged':
+        return redirect(url_for('sign_in'))
+    email = session['email']
+    cur.execute(f"SELECT ip, time FROM ips WHERE email = '{email}'")
+    ips = cur.fetchall()
+    ips.reverse()
+    return render_template("account.html", ips=ips)
+
+
+if __name__ == '__main__':
+    app.run(host='127.0.0.6', debug=True)
 
