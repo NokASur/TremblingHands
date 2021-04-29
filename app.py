@@ -26,7 +26,7 @@ class stupeeed_users(Base):
     __tablename__ = 'stupeed_users'
 
     id = Column(Integer, primary_key=True)
-    nickname = Column(String(15), nullable=False)
+    users = Column(String(15), nullable=False)
     email = Column(String(30), nullable=False)
     password = Column(String(30), nullable=False)
 
@@ -45,11 +45,11 @@ def index():
         return render_template("sign_in.html", CSK=os.environ['RECAPTCHA_SITE_KEY'])
     email = request.form['email']
     password = request.form['password']
-    cur.execute(f"SELECT COUNT(*) FROM users WHERE email = '{email}'")
+    cur.execute(f"SELECT COUNT(*) FROM stupeed_users WHERE email = '{email}'")
     count = cur.fetchall()[0][0]
     if count == 0:
         return render_template("sign-in.html", error=True)
-    cur.execute(f"SELECT password FROM users WHERE email = '{email}'")
+    cur.execute(f"SELECT password FROM stupeed_users WHERE email = '{email}'")
     password_hash = cur.fetchall()[0][0]
     if not check_password_hash(password_hash, password):
         return render_template("sign-in.html", error=True)
